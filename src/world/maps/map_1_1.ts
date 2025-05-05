@@ -2,7 +2,7 @@ import { MapModule } from './types';
 import { ctx, canvas } from '../../core/canvas';
 import { Tile } from './tileTypes';
 
-const TILE_SIZE = 8;
+const TILE_SIZE = 48;
 const COLS = Math.floor(canvas.width / TILE_SIZE);
 const ROWS = Math.floor(canvas.height / TILE_SIZE);
 
@@ -12,14 +12,7 @@ function generate(): Tile[][] {
   for (let y = 0; y < ROWS; y++) {
     const row: Tile[] = [];
     for (let x = 0; x < COLS; x++) {
-      const r = Math.random();
-      if (r < 0.2) {
-        row.push({ type: 'mountain', elevation: 60 + Math.random() * 40 });
-      } else if (r < 0.5) {
-        row.push({ type: 'field', elevation: 30 + Math.random() * 30 });
-      } else {
-        row.push({ type: 'valley', elevation: 10 + Math.random() * 20 });
-      }
+      row.push({ type: 'field', elevation: 40 });
     }
     data.push(row);
   }
@@ -30,56 +23,61 @@ function generate(): Tile[][] {
 function draw(data: Tile[][]): void {
   if (!ctx) return;
 
+  ctx.fillStyle = 'hsl(90, 40%, 50%)';
   for (let y = 0; y < data.length; y++) {
     for (let x = 0; x < data[y].length; x++) {
-      const tile = data[y][x];
-      const shade = Math.floor(tile.elevation);
-
-      switch (tile.type) {
-        case 'mountain':
-          ctx.fillStyle = `hsl(25, 25%, ${25 + shade * 0.4}%)`;
-          break;
-        case 'field':
-          ctx.fillStyle = `hsl(90, 40%, ${35 + shade * 0.3}%)`;
-          break;
-        case 'valley':
-          ctx.fillStyle = `hsl(160, 60%, ${45 + shade * 0.2}%)`;
-          break;
-      }
-
       ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
   }
 
+  const houseWidth = TILE_SIZE * 4;
+  const houseHeight = TILE_SIZE * 3;
+  const centerX = Math.floor((COLS * TILE_SIZE - houseWidth) / 2);
+  const centerY = Math.floor((ROWS * TILE_SIZE - houseHeight) / 2);
 
-  ctx.fillStyle = '#666';
-  for (let x = 0; x < COLS; x++) {
-    ctx.fillRect(x * TILE_SIZE, Math.floor(ROWS / 2) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-  }
+  ctx.fillStyle = '#8B4513';
+  ctx.fillRect(centerX, centerY, houseWidth, houseHeight);
 
-  ctx.fillStyle = 'maroon';
-  for (let i = 0; i < 3; i++) {
-    const hx = 2 + i * 3;
-    const hy = 3;
-    ctx.fillRect(hx * TILE_SIZE, hy * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
-    ctx.fillStyle = 'orange';
-    ctx.fillRect(hx * TILE_SIZE + 2, hy * TILE_SIZE, TILE_SIZE * 2 - 4, TILE_SIZE / 2);
-    ctx.fillStyle = 'maroon';
-  }
+  ctx.fillStyle = '#b22222';
+  ctx.beginPath();
+  ctx.moveTo(centerX - 10, centerY); 
+  ctx.lineTo(centerX + houseWidth / 2, centerY - TILE_SIZE); 
+  ctx.lineTo(centerX + houseWidth + 10, centerY); 
+  ctx.closePath();
+  ctx.fill();
 
-  for (let i = 0; i < 5; i++) {
-    const tx = COLS - 10 + Math.floor(Math.random() * 6);
-    const ty = ROWS - 8 + Math.floor(Math.random() * 5);
-    ctx.fillStyle = 'darkgreen';
+  const doorWidth = TILE_SIZE;
+  const doorHeight = TILE_SIZE * 1.5;
+  const doorX = centerX + houseWidth / 2 - doorWidth / 2;
+  const doorY = centerY + houseHeight - doorHeight;
+
+  ctx.fillStyle = '#654321'; 
+  ctx.fillRect(doorX, doorY, doorWidth, doorHeight);
+
+  ctx.fillStyle = 'gold';
+  ctx.beginPath();
+  ctx.arc(doorX + doorWidth - 10, doorY + doorHeight / 2, 4, 0, Math.PI * 2);
+  ctx.fill();
+
+  const windowSize = TILE_SIZE * 0.8;
+
+  const windowPositions = [
+    [centerX + TILE_SIZE * 0.5, centerY + TILE_SIZE * 0.5],
+    [centerX + TILE_SIZE * 2.5, centerY + TILE_SIZE * 0.5],
+  ];
+
+  ctx.fillStyle = '#87CEEB';
+  for (const [wx, wy] of windowPositions) {
+    ctx.fillRect(wx, wy, windowSize, windowSize);
+
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(tx * TILE_SIZE + 4, ty * TILE_SIZE + 4, 4, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  ctx.fillStyle = '#3bc6ff';
-  const riverX = Math.floor(COLS * 0.7);
-  for (let y = 0; y < ROWS; y++) {
-    ctx.fillRect(riverX * TILE_SIZE, y * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE);
+    ctx.moveTo(wx + windowSize / 2, wy);
+    ctx.lineTo(wx + windowSize / 2, wy + windowSize);
+    ctx.moveTo(wx, wy + windowSize / 2);
+    ctx.lineTo(wx + windowSize, wy + windowSize / 2);
+    ctx.stroke();
   }
 }
 

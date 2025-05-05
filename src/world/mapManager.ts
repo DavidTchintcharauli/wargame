@@ -7,7 +7,6 @@ const tileCache: Record<string, Tile[][]> = {};
 export function generateIfNeeded() {
   const key = `${currentMap.x}_${currentMap.y}` as const;
   if (!tileCache[key]) {
-    console.log('Generating new map for:', key);
     tileCache[key] = mapRegistry[key]?.generate();
   }
 }

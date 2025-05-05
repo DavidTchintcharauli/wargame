@@ -1,0 +1,16 @@
+{
+  "name": "wargame",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+   "dev": "vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}

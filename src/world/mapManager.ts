@@ -4,11 +4,22 @@ import { Tile } from './maps/tileTypes';
 
 const tileCache: Record<string, Tile[][]> = {};
 
-export function generateIfNeeded() {
+export function generateIfNeeded(): boolean {
   const key = `${currentMap.x}_${currentMap.y}` as const;
+
   if (!tileCache[key]) {
-    tileCache[key] = mapRegistry[key]?.generate();
+    const module = mapRegistry[key];
+
+    if (!module) {
+      console.warn(`map not loaded: ${key}`);
+      return false;
+    }
+
+    tileCache[key] = module.generate();
+    return true;
   }
+
+  return true;
 }
 
 export function drawCurrentMap() {
@@ -18,5 +29,7 @@ export function drawCurrentMap() {
 
   if (module && data) {
     module.draw(data);
+  } else {
+    console.warn(`map not loaded ${key}`);
   }
 }

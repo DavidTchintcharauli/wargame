@@ -2,7 +2,7 @@ import { MapModule } from './types';
 import { ctx, canvas } from '../../core/canvas';
 import { Tile } from './tileTypes';
 
-const TILE_SIZE = 32;
+const TILE_SIZE = 48;
 const COLS = Math.floor(canvas.width / TILE_SIZE);
 const ROWS = Math.floor(canvas.height / TILE_SIZE);
 

@@ -1,3 +1,5 @@
+import { generateIfNeeded } from './mapManager';
+
 export type MapCoord = { x: number; y: number };
 
 const WORLD_WIDTH = 3;
@@ -19,6 +21,10 @@ export function tryChangeMap(direction: 'left' | 'right' | 'up' | 'down'): boole
 
   if (isValid) {
     currentMap = newMap;
+
+    generateIfNeeded();
+    console.warn(`map not loaded: ${newMap.x}_${newMap.y}`);
+
     return true;
   }
 

@@ -23,7 +23,7 @@ export function tryChangeMap(direction: 'left' | 'right' | 'up' | 'down'): boole
     currentMap = newMap;
 
     generateIfNeeded();
-    console.warn(`map not loaded: ${newMap.x}_${newMap.y}`);
+    console.warn(`map is not loading: ${newMap.x}_${newMap.y}`);
 
     return true;
   }

@@ -11,7 +11,7 @@ export function generateIfNeeded(): boolean {
     const module = mapRegistry[key];
 
     if (!module) {
-      console.warn(`map not loaded: ${key}`);
+      console.warn(`map is not loading: ${key}`);
       return false;
     }
 
@@ -30,6 +30,6 @@ export function drawCurrentMap() {
   if (module && data) {
     module.draw(data);
   } else {
-    console.warn(`map not loaded ${key}`);
+    console.warn(`map is not loading: ${key}`);
   }
 }

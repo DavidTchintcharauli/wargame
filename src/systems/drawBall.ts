@@ -1,14 +1,17 @@
 import { ctx } from '../core/canvas';
-import { player } from '../entities/player';
 import { ball } from '../entities/ball';
+import { getBallFrames } from '../assets/loadBallSprites';
 
-export function drawBall(frames: HTMLImageElement[]) {
+export function drawBall() {
   if (!ctx) return;
-  const sprite = frames[ball.frameIndex];
+
+  const frames = getBallFrames();
+  const sprite = frames[ball.direction][ball.frameIndex];
+  console.log('ball:', ball.x, ball.y, ball.direction, ball.state, ball.frameIndex);
+
+
   if (!sprite?.complete) return;
 
-  const w = sprite.width;
-  const h = sprite.height;
+  ctx.drawImage(sprite, ball.x, ball.y, ball.size, ball.size);
 
-  ctx.drawImage(sprite, player.x, player.y, w, h);
 }

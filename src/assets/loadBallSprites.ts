@@ -1,26 +1,27 @@
-const ballFrames: HTMLImageElement[] = [];
+const frames: Record<'left' | 'right', HTMLImageElement[]> = {
+  left: [],
+  right: [],
+};
 
 export function loadBallSprites(): Promise<void> {
   return new Promise((resolve) => {
-    const normal = new Image();
-    const puffed = new Image();
-
+    const directions: ('left' | 'right')[] = ['left', 'right'];
     let loaded = 0;
-    const check = () => {
-      loaded++;
-      if (loaded === 2) resolve();
-    };
 
-    normal.src = '/assets/sprites/ball_normal_right.png';
-    puffed.src = '/assets/sprites/ball_puffed_right.png';
-
-    normal.onload = check;
-    puffed.onload = check;
-
-    ballFrames.push(normal, puffed);
+    directions.forEach((dir) => {
+      for (let i = 0; i < 2; i++) {
+        const img = new Image();
+        img.src = `/assets/sprites/ball_${dir}_${i}.png`;
+        img.onload = () => {
+          loaded++;
+          if (loaded === 4) resolve();
+        };
+        frames[dir].push(img);
+      }
+    });
   });
 }
 
 export function getBallFrames() {
-  return ballFrames;
+  return frames;
 }

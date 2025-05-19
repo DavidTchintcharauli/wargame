@@ -19,7 +19,7 @@ function gameLoop(timestamp: number) {
   lastTime = timestamp;
 
   updateBall(delta);
-  drawBall(getBallFrames());
+  drawBall();
 
   update();
   draw();

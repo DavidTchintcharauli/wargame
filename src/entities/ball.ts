@@ -6,5 +6,8 @@ export const ball = {
   y: 100,
   frameIndex: 0,
   frameTimer: 0,
-  frameDelay: 300,
+  frameDelay: 200,
+  direction: 'right' as Direction,
+  state: 'idle' as BallState,
+  size: 164,
 };

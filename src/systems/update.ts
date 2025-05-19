@@ -2,8 +2,10 @@ import { keys, isDirectionPressed, isRunPressed } from '../input/keyboard';
 import { canvas } from '../core/canvas';
 import { tryChangeMap } from '../world/map';
 import { player } from '../entities/player';
+import { ball } from '../entities/ball';
 
 export function update() {
+  
   if (!isDirectionPressed()) return;
 
   const speed = player.getSpeed(isRunPressed());

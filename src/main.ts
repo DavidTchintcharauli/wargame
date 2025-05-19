@@ -2,12 +2,27 @@ import './input/keyboard';
 import { update } from './systems/update';
 import { draw } from './systems/render';
 import { generateIfNeeded } from './world/mapManager';
+import { loadBallSprites, getBallFrames } from './assets/loadBallSprites';
+import { updateBall } from './systems/updateBall';
+import { drawBall } from './systems/drawBall';
 
-generateIfNeeded(); // ⚠️ ეს უნდა გაეშვას პირველივე frame-ამდე
-gameLoop();
+let lastTime = 0;
 
-function gameLoop() {
+generateIfNeeded();
+
+loadBallSprites().then(() => {
+  requestAnimationFrame(gameLoop);
+});
+
+function gameLoop(timestamp: number) {
+  const delta = timestamp - lastTime;
+  lastTime = timestamp;
+
+  updateBall(delta);
+  drawBall(getBallFrames());
+
   update();
   draw();
+
   requestAnimationFrame(gameLoop);
 }

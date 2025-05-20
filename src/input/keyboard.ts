@@ -18,3 +18,7 @@ export function isDirectionPressed(): boolean {
 export function isRunPressed(): boolean {
   return keys['shift'];
 }
+
+export function isAttackHeld(): boolean {
+  return keys['v'] || keys[' ']; 
+}
